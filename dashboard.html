@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Home Tutors Gorakhpur</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="large.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <div class="flex items-center space-x-3">
+                <img src="large.png" alt="Home Tutors Gorakhpur logo" class="h-10 w-10 rounded-full">
+                <span class="text-xl font-bold text-indigo-700">Home Tutors Gorakhpur</span>
+            </div>
+            <button id="logout-btn" class="text-gray-700 hover:text-indigo-600 font-medium">Logout</button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div id="loading" class="text-center text-gray-500">Loading your account…</div>
+
+        <div id="dashboard-content" class="hidden">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome, <span id="user-name"></span> 👋</h1>
+            <p class="text-gray-600 mb-8">Email: <span id="user-email"></span></p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Need a Tutor?</h2>
+                    <p class="text-gray-600 mb-4">Tell us what subject and class you need help with.</p>
+                    <a href="index.html#need-tutor" class="inline-block btn-primary bg-indigo-600 text-white font-medium py-2 px-5 rounded-full hover:bg-indigo-700">Find a Tutor</a>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Want to Teach?</h2>
+                    <p class="text-gray-600 mb-4">Apply to become a verified tutor with us.</p>
+                    <a href="index.html#become-tutor" class="inline-block bg-indigo-600 text-white font-medium py-2 px-5 rounded-full hover:bg-indigo-700">Become a Tutor</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // Not logged in — send back to homepage
+                window.location.href = 'index.html';
+                return;
+            }
+            document.getElementById('user-name').textContent = user.displayName || 'there';
+            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await auth.signOut();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
